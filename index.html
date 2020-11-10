@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exercice Frontend and eXist-DB</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+
+    <!--    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.3.45/css/materialdesignicons.min.css">-->
+
+</head>
+<body class="container">
+
+<h1 class="is-size-1">Exercice Frontend and eXist-DB </h1>
+
+<div class="notification is-primary">
+    The <a href="https://buefy.org/documentation" target="_blank">documentation of Buefy</a>, one of the UI component Framwork based on VueJS.<br>
+    The <a href="https://github.com/axios/axios#axios-api" target="_blank">documentation of Axios</a> a promise implementation in JS.
+</div>
+<div id="app">
+    <!-- Buefy components goes here -->
+    <section>
+        <b-table
+                :data="data"
+                :columns="columns">
+        </b-table>
+
+        <template
+                v-if="column.searchable && !column.numeric"
+                slot="searchable"
+                slot-scope="props">
+            <b-input
+                    v-model="props.filters[props.column.field]"
+                    placeholder="Search..."
+                    icon="magnify"
+                    size="is-small" />
+        </template>
+        <template v-slot="props">
+            {{ props.row[column.field] }}
+        </template>
+        </b-table-column>
+        </template>
+        </b-table>
+    </section>
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<!-- Full bundle -->
+<script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<!-- Individual components -->
+<script src="https://unpkg.com/buefy/dist/components/table"></script>
+<script src="https://unpkg.com/buefy/dist/components/input"></script>
+
+<script>
+
+    const earthquake = axios.get
+
+    const example = {
+        data() {
+            return {
+                data: [],
+                columns: [
+                    {
+                        field: 'id',
+                        label: 'ID',
+                        width: '100',
+                        numeric: true,
+                        searchable: true,
+                    },
+                    {
+                        field: 'first_name',
+                        label: 'First Name',
+                        searchable: true,
+                    },
+                    {
+                        field: 'last_name',
+                        label: 'Last Name',
+                        searchable: true,
+                    },
+                    {
+                        field: 'date',
+                        label: 'Date',
+                        centered: true
+                    },
+                    {
+                        field: 'gender',
+                        label: 'Gender',
+                    }
+                ]
+            }
+        },
+        mounted() {
+            axios
+                .get('http://localhost:9090/data.json')
+                .then(response => {this.data = response.data; console.log(response.data)});
+        }
+    }
+
+    const app = new Vue(example)
+    app.$mount('#app')
+</script>
+</body>
+</html>
