@@ -93,7 +93,7 @@
         },
         mounted() {
             axios
-                .get('http://localhost:9090/data.json')
+                .get('/data.json')
                 .then(response => {this.data = response.data; console.log(response.data)});
         }
     }
